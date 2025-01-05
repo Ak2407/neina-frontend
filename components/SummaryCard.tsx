@@ -11,12 +11,11 @@ import {
 
 type BookingDataProps = {
   guests: number;
-  date: Date;
+  date: Date | undefined;
   time: string;
   name: string;
   phone: string;
   email: string;
-  restaurantName: string;
   onClick?: () => void;
 };
 
@@ -27,14 +26,13 @@ const SummaryCard = ({
   name,
   phone,
   email,
-  restaurantName,
   onClick,
 }: BookingDataProps) => {
   return (
     <Card className="w-[350px] sm:w-[450px] bg-gradient-to-br from-emerald-100 to-teal-200 text-emerald-900 font-bold shadow-xl ">
       <div className="p-6 space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">{restaurantName}</h2>
+          <h2 className="text-2xl font-bold">Restaurant</h2>
           <div className="flex items-center bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
             <CheckCircle2 className="w-4 h-4 mr-1" />
             Confirmed

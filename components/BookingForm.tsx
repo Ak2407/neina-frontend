@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 import SummaryCard from "./SummaryCard";
 
 type BookingData = {
-  guests: string;
+  guests: number;
   date: Date | undefined;
   time: string;
   name: string;
@@ -28,7 +28,7 @@ type BookingData = {
 };
 
 const initialBookingData: BookingData = {
-  guests: "",
+  guests: 1,
   date: undefined,
   time: "",
   name: "",
@@ -67,7 +67,7 @@ export default function BookingForm() {
 
       const formattedDate = format(selectedDate, "yyyy-MM-dd");
       const response = await axios.get(
-        `http://localhost:1234/booking/available-slots/${formattedDate}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/available-slots/${formattedDate}`,
       );
 
       const { bookedTimeSlots } = response.data;
@@ -102,9 +102,12 @@ export default function BookingForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:1234/booking/create", {
-        bookingData,
-      });
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/create`,
+        {
+          bookingData,
+        },
+      );
 
       setStep(2);
     } catch (error) {
