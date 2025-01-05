@@ -64,10 +64,10 @@ export default function BookingForm() {
   const fetchAvailableTimeSlots = async (selectedDate: Date) => {
     try {
       setIsLoadingSlots(true);
-
       const formattedDate = format(selectedDate, "yyyy-MM-dd");
+
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/available-slots/${formattedDate}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/available-slots/${formattedDate}`
       );
 
       const { bookedTimeSlots } = response.data;
@@ -102,11 +102,17 @@ export default function BookingForm() {
     e.preventDefault();
     setLoading(true);
     try {
+      const nextDay = new Date(bookingData.date!);
+      nextDay.setDate(nextDay.getDate() + 1);
+
       await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/booking/create`,
         {
-          bookingData,
-        },
+          bookingData: {
+            ...bookingData,
+            date: nextDay.toISOString(),
+          },
+        }
       );
 
       setStep(2);
@@ -167,7 +173,7 @@ export default function BookingForm() {
                     disabled={isLoadingSlots}
                     className={cn(
                       "rounded-md border flex items-center justify-evenly",
-                      isLoadingSlots && "opacity-50 cursor-not-allowed",
+                      isLoadingSlots && "opacity-50 cursor-not-allowed"
                     )}
                   />
                 </div>
